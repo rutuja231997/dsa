@@ -39,7 +39,7 @@ LinkedList.prototype.addNodeAtTail = function (val) {
 };
 
 LinkedList.prototype.addNodeAtIndex = function (index, val) {
-  if (index < 0 && index >= this.size) return -1;
+  if (index < 0 && index > this.size) return -1;
 
   if (index === 0) {
     this.addNodeAtHead(val);
@@ -53,10 +53,9 @@ LinkedList.prototype.addNodeAtIndex = function (index, val) {
     }
     newNode.next = curr.next;
     curr.next = newNode;
-  } else {
-    this.addNodeAtTail();
-    return;
   }
+
+  this.size++;
 };
 
 LinkedList.prototype.getNode = function (index) {
@@ -107,8 +106,45 @@ LinkedList.prototype.middleNode = function () {
     slow = slow.next;
     fast = fast.next.next;
   }
+};
 
-  return console.log(slow);
+LinkedList.prototype.removeNode = function (head, val) {
+  let sentinel = new Node();
+  sentinel.next = head;
+
+  let prev = sentinel;
+
+  while (prev && prev.next) {
+    if (prev.next.val === val) {
+      prev.next = prev.next.next;
+    } else {
+      prev = prev.next;
+    }
+  }
+
+  return sentinel.next;
+};
+
+LinkedList.prototype.removeDuplicates = function (head) {
+  let curr = head;
+
+  while (curr !== null && curr.next !== null) {
+    if (curr.val === curr.next.val) {
+      curr.next = curr.next.next;
+    } else {
+      curr = curr.next;
+    }
+  }
+  return head;
+};
+
+LinkedList.prototype.printingVal = function (head) {
+  let curr = head;
+
+  while (curr !== null) {
+    console.log(curr.val);
+    curr = curr.next;
+  }
 };
 
 let obj = new LinkedList();
@@ -117,6 +153,8 @@ obj.addNodeAtHead(10);
 obj.addNodeAtTail(30);
 obj.addNodeAtIndex(1, 20);
 obj.addNodeAtIndex(2, 60);
+obj.addNodeAtIndex(3, 20);
+obj.addNodeAtIndex(4, 10);
 obj.addNodeAtIndex(0, 5);
 obj.addNodeAtTail(70);
 
@@ -127,3 +165,12 @@ obj.deleteNode(3);
 obj.printLinkedList();
 
 obj.middleNode();
+
+obj.printingVal(obj.head);
+
+// obj.removeNode(obj.head, 5);
+// obj.removeNode(obj.head, 30);
+
+obj.removeDuplicates(obj.head);
+
+obj.printLinkedList();
